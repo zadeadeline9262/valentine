@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Dancing Script', cursive;
+            background-color: #000; /* Pure black background */
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ff0066, 0 0 20px #ff0066;
+            animation: glow 2s infinite alternate, fadeIn 2s ease-in-out;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px #ff0066, 0 0 20px #ff0066; }
+            100% { text-shadow: 0 0 20px #ff0066, 0 0 40px #ff0066; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        button {
+            padding: 10px 20px; /* Smaller button size */
+            font-size: 1.2rem; /* Adjusted font size */
+            color: #fff;
+            background-color: #ff0066;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #cc0052;
+        }
+
+        #message {
+            display: none;
+            margin-top: 20px;
+            font-size: 2rem;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        #love-letter {
+            display: none;
+            background-color: rgba(26, 26, 26, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 500px;
+            text-align: left;
+            animation: slideIn 1s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        #access-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        #access-box input {
+            padding: 10px;
+            font-size: 1rem;
+            border: 2px solid #ff0066;
+            border-radius: 5px;
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        #access-box button {
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+
+        #response-buttons {
+            display: none;
+            margin-top: 20px;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #response-buttons button {
+            margin: 0 10px;
+        }
+
+        #strict-parents-section {
+            display: none;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        #strict-parents-section h2 {
+            font-size: 1.5rem; /* Adjusted to match the text size below */
+            margin-bottom: 20px;
+        }
+
+        #strict-parents-section p {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        #strict-parents-section button {
+            margin-top: 20px;
+        }
+
+        #final-page {
+            display: none;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        #final-page h1 {
+            font-size: 2.5rem; /* Smaller text size */
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #000, 0 0 20px #000; /* Black glow effect */
+        }
+
+        #final-page p {
+            font-size: 1.2rem; /* Smaller text size */
+            margin-bottom: 20px;
+        }
+
+        /* Black Rose Styles */
+        .rose {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #000; /* Black color for roses */
+            border-radius: 50%;
+            animation: float 3s infinite ease-in-out;
+        }
+
+        .rose::before,
+        .rose::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #333; /* Darker black for petals */
+            border-radius: 50%;
+        }
+
+        .rose::before {
+            top: 5px;
+            left: 5px;
+        }
+
+        .rose::after {
+            top: 5px;
+            right: 5px;
+        }
+
+        .rose .petal {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #333; /* Darker black for petals */
+            border-radius: 50%;
+        }
+
+        .rose .petal:nth-child(1) {
+            top: 10px;
+            left: 0;
+        }
+
+        .rose .petal:nth-child(2) {
+            top: 10px;
+            right: 0;
+        }
+
+        .rose .petal:nth-child(3) {
+            top: 20px;
+            left: 10px;
+        }
+
+        .rose .petal:nth-child(4) {
+            top: 20px;
+            right: 10px;
+        }
+
+        .rose .stem {
+            position: absolute;
+            width: 5px;
+            height: 60px;
+            background-color: #008000; /* Green color for stem */
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .rose .leaf {
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            background-color: #008000; /* Green color for leaves */
+            border-radius: 50%;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+        }
+
+        .rose .leaf:nth-child(2) {
+            transform: translateX(-50%) rotate(-45deg);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Rose Bouquet Styles */
+        .rose-bouquet {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rose-bouquet .rose {
+            position: relative;
+        }
+
+        /* Bouquet Positions */
+        #bouquet-top {
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: slideInTop 1.5s ease-in-out forwards;
+        }
+
+        #bouquet-bottom {
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: slideInBottom 1.5s ease-in-out forwards;
+        }
+
+        #bouquet-left {
+            left: -100px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: slideInLeft 1.5s ease-in-out forwards;
+        }
+
+        #bouquet-right {
+            right: -100px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: slideInRight 1.5s ease-in-out forwards;
+        }
+
+        @keyframes slideInTop {
+            from { top: -100px; }
+            to { top: 20px; }
+        }
+
+        @keyframes slideInBottom {
+            from { bottom: -100px; }
+            to { bottom: 20px; }
+        }
+
+        @keyframes slideInLeft {
+            from { left: -100px; }
+            to { left: 20px; }
+        }
+
+        @keyframes slideInRight {
+            from { right: -100px; }
+            to { right: 20px; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Access Control -->
+    <div id="access-box">
+        <p>Type your name:</p>
+        <input type="text" id="name-input" placeholder="Enter your name">
+        <button onclick="checkName()">Submit</button>
+    </div>
+
+    <!-- Main Content (Hidden Initially) -->
+    <div id="main-content" style="display: none;">
+        <div id="love-letter">
+            <h2>Zama 💖,</h2>
+            <p>
+                From the moment I saw you, it was as if the world stopped spinning. You’ve become my obsession, my quiet addiction. I can’t escape the way you consume my thoughts, like a shadow I can’t shake.
+            </p>
+            <p>
+                You’re the kind of dangerous beauty that leaves a mark, and I’m drawn to you in ways I can’t explain. I don’t know if you feel it too, but I had to tell you—you’ve already haunted me.
+            </p>
+            <p>With all my love,</p>
+            <p>Someone.</p>
+            <button onclick="showValentineQuestion()">Continue</button>
+        </div>
+
+        <!-- Valentine Question (Hidden Initially) -->
+        <div id="valentine-question" style="display: none;">
+            <h1>Will you be my Valentine?</h1>
+            <div id="response-buttons">
+                <button onclick="showStrictParentsSection()">Yes</button>
+                <button onclick="alert('I will keep trying until you say yes! ❤️')">No</button>
+            </div>
+            <!-- Black Rose Bouquets -->
+            <div id="bouquet-top" class="rose-bouquet">
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="stem"></div>
+                    <div class="leaf"></div>
+                    <div class="leaf"></div>
+                </div>
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="stem"></div>
+                    <div class="leaf"></div>
+                    <div class="leaf"></div>
+                </div>
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="stem"></div>
+                    <div class="leaf"></div>
+                    <div class="leaf"></div>
+                </div>
+            </div>
+            <div id="bouquet-bottom" class="rose-bouquet">
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="stem"></div>
+                    <div class="leaf"></div>
+                    <div class="leaf"></div>
+                </div>
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="stem"></div>
+                    <div class="leaf"></div>
+                    <div class="leaf"></div>
+                </div>
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="stem"></div>
+                    <div class="leaf"></div>
+                    <div class="leaf"></div>
+                </div>
+            </div>
+            <div id="bouquet-left" class="rose-bouquet">
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="stem"></div>
+                    <div class="leaf"></div>
+                    <div class="leaf"></div>
+                </div>
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="stem"></div>
+                    <div class="leaf"></div>
+                    <div class="leaf"></div>
+                </div>
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="stem"></div>
+                    <div class="leaf"></div>
+                    <div class="leaf"></div>
+                </div>
+            </div>
+            <div id="bouquet-right" class="rose-bouquet">
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="stem"></div>
+                    <div class="leaf"></div>
+                    <div class="leaf"></div>
+                </div>
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="stem"></div>
+                    <div class="leaf"></div>
+                    <div class="leaf"></div>
+                </div>
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="stem"></div>
+                    <div class="leaf"></div>
+                    <div class="leaf"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Strict Parents Section (Hidden Initially) -->
+        <div id="strict-parents-section">
+            <h2>I know your parents are strict...</h2>
+            <p>I don’t want to mess this up. So, I’d like to take things slowly.</p>
+            <p>If this doesn’t catch your attention, you can move on. But if you feel even a small spark of curiosity, stay with me.<p>
+            <button onclick="showFinalPage()">Continue</button>
+        </div>
+    </div>
+
+    <!-- Final Page (Hidden Initially) -->
+    <div id="final-page">
+        <h1>Let's get to know each other</h1>
+        <p>+94 772647595</p>
+        <p>Text me when it feels right ❤️</p>
+        <p>Keep this a secret 🤫</p>
+    </div>
+	
+	
+
+    <!-- JavaScript -->
+    <script>
+        // Access Control
+        function checkName() {
+            const nameInput = document.getElementById('name-input').value.trim().toLowerCase();
+            if (nameInput === 'zama') { // Name is set to "Zama"
+                document.getElementById('access-box').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                document.getElementById('love-letter').style.display = 'block';
+            } else {
+                alert('Incorrect name. Try again.');
+            }
+        }
+
+        // Show Valentine Question
+        function showValentineQuestion() {
+            document.getElementById('love-letter').style.display = 'none';
+            document.getElementById('valentine-question').style.display = 'block';
+            document.getElementById('response-buttons').style.display = 'flex'; // Show the buttons
+        }
+
+        // Show Strict Parents Section
+        function showStrictParentsSection() {
+            document.getElementById('valentine-question').style.display = 'none';
+            document.getElementById('strict-parents-section').style.display = 'block';
+        }
+
+        // Show Final Page
+        function showFinalPage() {
+            document.getElementById('strict-parents-section').style.display = 'none';
+            document.getElementById('final-page').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
+
+
